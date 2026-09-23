@@ -1,0 +1,782 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PairLab | Học lập trình cùng AI, ra sản phẩm thật sau 8 tuần</title>
+<meta name="description" content="PairLab dạy lập trình cùng AI: dùng Cursor, Claude Code, Copilot đúng cách để viết code nhanh hơn mà vẫn hiểu từng dòng. Khóa học cho người mới, dev đi làm và doanh nghiệp.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="PairLab | Học lập trình cùng AI">
+<meta property="og:description" content="Viết code nhanh hơn mà vẫn hiểu từng dòng. Lộ trình 8 tuần, mentor kèm dự án thật.">
+<meta property="og:locale" content="vi_VN">
+<meta property="og:site_name" content="PairLab">
+<meta property="og:image" content="https://pairlab.vn/og-image.png">
+<meta property="og:url" content="https://pairlab.vn/">
+<meta name="theme-color" content="#5B4BFF">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap&subset=vietnamese" rel="stylesheet">
+<style>
+  :root {
+    --ink: #161A33;
+    --editor: #1A1F3D;
+    --paper: #F6F7FB;
+    --white: #FFFFFF;
+    --violet: #5B4BFF;
+    --violet-deep: #4334E0;
+    --butter: #FFD95A;
+    --slate: #5D6485;
+    --line: #DDE0EC;
+    --ok: #1F9D6B;
+    --err: #D1344B;
+    --mono: ui-monospace, "Cascadia Code", Consolas, "SF Mono", Menlo, monospace;
+    --wrap: 1180px;
+    --header-h: 68px;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; }
+  html { scroll-behavior: smooth; scroll-padding-top: calc(var(--header-h) + 12px); }
+  body {
+    margin: 0;
+    font-family: "Space Grotesk", system-ui, sans-serif;
+    font-size: 1.0625rem;
+    line-height: 1.6;
+    color: var(--ink);
+    background: var(--paper);
+    -webkit-font-smoothing: antialiased;
+  }
+  img, svg { display: block; }
+  a { color: inherit; }
+  h1, h2, h3 { line-height: 1.12; margin: 0; letter-spacing: -0.02em; }
+  p { margin: 0; }
+  .wrap { width: 100%; max-width: var(--wrap); margin: 0 auto; padding: 0 24px; }
+  :focus-visible { outline: 3px solid var(--violet); outline-offset: 3px; border-radius: 4px; }
+  .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+  /* ---------- Buttons ---------- */
+  .btn {
+    display: inline-flex; align-items: center; justify-content: center; gap: 10px;
+    font: inherit; font-weight: 600; font-size: 1rem;
+    padding: 14px 24px; border-radius: 10px; border: 2px solid transparent;
+    text-decoration: none; cursor: pointer;
+    transition: background-color .2s, transform .2s, box-shadow .2s;
+  }
+  .btn-primary { background: var(--violet); color: var(--white); box-shadow: 0 4px 0 var(--violet-deep); }
+  .btn-primary:hover { background: var(--violet-deep); }
+  .btn-primary:active { transform: translateY(3px); box-shadow: 0 1px 0 var(--violet-deep); }
+  .btn-ghost { border-color: var(--line); color: var(--ink); background: var(--white); }
+  .btn-ghost:hover { border-color: var(--ink); }
+
+  /* ---------- Header ---------- */
+  .site-header {
+    position: sticky; top: 0; z-index: 50;
+    background: rgba(246, 247, 251, .88);
+    backdrop-filter: saturate(160%) blur(12px);
+    -webkit-backdrop-filter: saturate(160%) blur(12px);
+    border-bottom: 1px solid transparent;
+    transition: border-color .25s;
+  }
+  .site-header.scrolled { border-bottom-color: var(--line); }
+  .nav { height: var(--header-h); display: flex; align-items: center; justify-content: space-between; gap: 24px; }
+  .logo { display: inline-flex; align-items: center; gap: 10px; font-weight: 700; font-size: 1.3rem; text-decoration: none; letter-spacing: -0.02em; }
+  .logo-mark { width: 34px; height: 34px; border-radius: 9px; background: var(--ink); display: grid; place-items: center; }
+  .nav-links { display: flex; align-items: center; gap: 32px; list-style: none; margin: 0; padding: 0; }
+  .nav-links a { text-decoration: none; font-weight: 500; color: var(--slate); transition: color .2s; }
+  .nav-links a:hover { color: var(--ink); }
+  .nav-links a.nav-cta, .nav-links a.nav-cta:hover { color: var(--white); }
+  .nav-cta { padding: 10px 18px; font-size: .95rem; }
+  .menu-toggle {
+    display: none; width: 44px; height: 44px; border: 0; background: transparent; cursor: pointer;
+    position: relative; border-radius: 8px;
+  }
+  .menu-toggle span, .menu-toggle span::before, .menu-toggle span::after {
+    position: absolute; left: 11px; width: 22px; height: 2px; background: var(--ink); border-radius: 2px;
+    transition: transform .25s, opacity .2s; content: "";
+  }
+  .menu-toggle span { top: 21px; }
+  .menu-toggle span::before { left: 0; top: -7px; }
+  .menu-toggle span::after { left: 0; top: 7px; }
+  .menu-toggle[aria-expanded="true"] span { background: transparent; }
+  .menu-toggle[aria-expanded="true"] span::before { transform: translateY(7px) rotate(45deg); }
+  .menu-toggle[aria-expanded="true"] span::after { transform: translateY(-7px) rotate(-45deg); }
+
+  /* ---------- Hero ---------- */
+  .hero { padding: 72px 0 96px; position: relative; overflow: hidden; }
+  .hero::before {
+    content: ""; position: absolute; inset: 0; z-index: -1;
+    background:
+      radial-gradient(600px 400px at 85% 20%, rgba(91, 75, 255, .14), transparent 70%),
+      radial-gradient(500px 300px at 70% 90%, rgba(255, 217, 90, .22), transparent 70%);
+  }
+  .hero-grid { display: grid; grid-template-columns: 1fr 1.08fr; gap: 56px; align-items: center; }
+  .hero h1 { font-size: clamp(2.4rem, 5.2vw, 4rem); font-weight: 700; max-width: 13ch; }
+  .hero-lead { margin-top: 24px; font-size: 1.2rem; color: var(--slate); max-width: 46ch; }
+  .hero-actions { margin-top: 36px; display: flex; flex-wrap: wrap; gap: 14px; }
+  .hero-note { margin-top: 22px; font-size: .95rem; color: var(--slate); display: flex; align-items: center; gap: 10px; }
+  .hero-note .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--ok); box-shadow: 0 0 0 4px rgba(31,157,107,.18); }
+
+  /* Editor — the one memorable element */
+  .editor {
+    background: var(--editor); color: #C9CEEA; border-radius: 16px;
+    box-shadow: 0 30px 60px -20px rgba(22, 26, 51, .45), 0 0 0 1px rgba(22,26,51,.08);
+    overflow: hidden; font-family: var(--mono); font-size: .9rem;
+    transform: rotate(-1deg);
+  }
+  .editor-bar { display: flex; align-items: center; gap: 8px; padding: 12px 16px; background: rgba(255,255,255,.04); border-bottom: 1px solid rgba(255,255,255,.06); }
+  .editor-bar i { width: 11px; height: 11px; border-radius: 50%; background: #3A4070; }
+  .editor-tab { margin-left: 14px; font-size: .8rem; color: #8F95BD; padding: 4px 10px; background: rgba(255,255,255,.06); border-radius: 6px; }
+  .editor-body { padding: 20px 0 22px; min-height: 290px; position: relative; }
+  .code-line { display: flex; white-space: pre; line-height: 1.75; padding-right: 16px; }
+  .ln { width: 44px; flex: none; text-align: right; padding-right: 16px; color: #4A5185; user-select: none; }
+  .code { overflow: hidden; text-overflow: clip; }
+  .cm { color: #8F95BD; }
+  .kw { color: #B7A8FF; }
+  .fn { color: #7FD4FF; }
+  .str { color: var(--butter); }
+  .caret { display: inline-block; width: 2px; height: 1.1em; background: var(--butter); vertical-align: -3px; margin-left: 1px; animation: blink 1s steps(1) infinite; }
+  @keyframes blink { 50% { opacity: 0; } }
+  .suggestion { transition: opacity .35s; }
+  .suggestion.ghost .code, .suggestion.ghost .code span { color: #6A7099; font-style: italic; }
+  .suggestion.hidden { opacity: 0; }
+  .suggestion.accepted .code-line { animation: flash .9s ease-out; }
+  @keyframes flash { from { background: rgba(255, 217, 90, .16); } to { background: transparent; } }
+  .editor-status {
+    display: flex; align-items: center; justify-content: space-between; gap: 12px;
+    padding: 10px 16px; font-size: .78rem; color: #8F95BD; background: rgba(255,255,255,.03);
+    border-top: 1px solid rgba(255,255,255,.06); font-family: "Space Grotesk", sans-serif;
+  }
+  .kbd {
+    display: inline-block; font-family: var(--mono); font-size: .75rem; padding: 2px 8px; border-radius: 5px;
+    border: 1px solid #4A5185; border-bottom-width: 3px; color: #C9CEEA; transition: all .15s;
+  }
+  .kbd.pressed { background: var(--butter); color: var(--ink); border-color: #C9A52B; transform: translateY(2px); border-bottom-width: 1px; }
+  .status-msg { transition: color .3s; }
+  .status-msg.ok { color: var(--butter); }
+
+  /* ---------- Sections ---------- */
+  section.block { padding: 112px 0; }
+  .section-head { max-width: 640px; margin-bottom: 56px; }
+  .section-head h2 { font-size: clamp(2rem, 3.6vw, 2.9rem); font-weight: 700; }
+  .section-head p { margin-top: 16px; color: var(--slate); font-size: 1.125rem; }
+
+  /* About */
+  .about { background: var(--white); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+  .about-grid { display: grid; grid-template-columns: 1.1fr 1fr; gap: 72px; align-items: start; }
+  .about-text p + p { margin-top: 18px; }
+  .about-text p { color: var(--slate); max-width: 60ch; }
+  .about-text p:first-of-type { color: var(--ink); font-size: 1.2rem; }
+  .stats { display: grid; grid-template-columns: 1fr 1fr; border: 1px solid var(--line); border-radius: 16px; overflow: hidden; }
+  .stat { padding: 28px 26px; border-bottom: 1px solid var(--line); }
+  .stat:nth-child(odd) { border-right: 1px solid var(--line); }
+  .stat:nth-last-child(-n+2) { border-bottom: 0; }
+  .stat-num { font-size: clamp(2.2rem, 4vw, 3rem); font-weight: 700; letter-spacing: -0.03em; line-height: 1; font-variant-numeric: tabular-nums; }
+  .stat-num .suffix { color: var(--violet); }
+  .stat-label { margin-top: 10px; color: var(--slate); font-size: .95rem; }
+
+  /* Courses */
+  .courses-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+  .course {
+    display: flex; flex-direction: column; background: var(--white);
+    border: 1px solid var(--line); border-radius: 14px; padding: 28px;
+    transition: border-color .2s;
+  }
+  .course:hover { border-color: var(--violet); }
+  .course-level { display: flex; align-items: center; gap: 8px; font-size: .9rem; color: var(--slate); }
+  .bars { display: inline-flex; gap: 3px; align-items: flex-end; }
+  .bars b { width: 5px; background: var(--line); border-radius: 2px; }
+  .bars b:nth-child(1) { height: 8px; } .bars b:nth-child(2) { height: 12px; } .bars b:nth-child(3) { height: 16px; }
+  .bars[data-level="1"] b:nth-child(-n+1),
+  .bars[data-level="2"] b:nth-child(-n+2),
+  .bars[data-level="3"] b:nth-child(-n+3) { background: var(--violet); }
+  .course h3 { font-size: 1.4rem; margin-top: 18px; }
+  .course-desc { margin-top: 10px; color: var(--slate); font-size: 1rem; }
+  .tools { display: flex; flex-wrap: wrap; gap: 6px; margin: 20px 0 0; padding: 0; list-style: none; }
+  .tools li { font-size: .82rem; padding: 4px 10px; border-radius: 6px; background: var(--paper); color: var(--ink); }
+  .course-foot { margin-top: auto; padding-top: 24px; display: flex; align-items: flex-end; justify-content: space-between; gap: 12px; }
+  .course-meta { font-size: .9rem; color: var(--slate); }
+  .price { font-size: 1.35rem; font-weight: 700; white-space: nowrap; }
+  .course-foot-wrap { margin-top: auto; }
+  .course-link { display: inline-block; margin-top: 18px; font-weight: 600; color: var(--violet); text-decoration: none; }
+  .course-link:hover { text-decoration: underline; text-underline-offset: 4px; }
+
+  .course.featured { background: var(--violet); border-color: var(--violet); color: var(--white); }
+  .course.featured .course-desc, .course.featured .course-meta, .course.featured .course-level { color: rgba(255,255,255,.8); }
+  .course.featured .bars b { background: rgba(255,255,255,.3); }
+  .course.featured .bars b:nth-child(-n+2) { background: var(--butter); }
+  .course.featured .tools li { background: rgba(255,255,255,.14); color: var(--white); }
+  .course.featured .course-link { color: var(--butter); }
+  .badge { align-self: flex-start; margin-bottom: 14px; font-size: .82rem; font-weight: 600; padding: 4px 10px; border-radius: 6px; background: var(--butter); color: var(--ink); }
+
+  /* Testimonials */
+  .reviews { background: var(--ink); color: var(--white); }
+  .reviews .section-head p { color: #A9AED0; }
+  .reviews-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+  .review { background: rgba(255,255,255,.05); border: 1px solid rgba(255,255,255,.1); border-radius: 14px; padding: 30px; display: flex; flex-direction: column; }
+  .review blockquote { margin: 0; font-size: 1.1rem; line-height: 1.6; }
+  .review .result { margin-top: 18px; font-size: .92rem; color: var(--butter); }
+  .reviewer { margin-top: auto; padding-top: 26px; display: flex; align-items: center; gap: 14px; }
+  .avatar { width: 52px; height: 52px; border-radius: 50%; flex: none; display: grid; place-items: center; font-weight: 700; font-size: 1.05rem; color: var(--ink); }
+  .reviewer strong { display: block; font-weight: 600; }
+  .reviewer span { font-size: .9rem; color: #A9AED0; }
+
+  /* Contact */
+  .contact-grid { display: grid; grid-template-columns: 1.3fr 1fr; gap: 48px; align-items: start; }
+  .form-card { background: var(--white); border: 1px solid var(--line); border-radius: 16px; padding: 36px; }
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+  .field { display: flex; flex-direction: column; gap: 8px; margin-bottom: 18px; }
+  .field label { font-weight: 500; font-size: .95rem; }
+  .field label small { color: var(--slate); font-weight: 400; }
+  .field input, .field textarea {
+    font: inherit; font-size: 1rem; color: var(--ink); background: var(--paper);
+    border: 1.5px solid var(--line); border-radius: 10px; padding: 12px 14px; width: 100%;
+    transition: border-color .2s, background-color .2s;
+  }
+  .field textarea { resize: vertical; min-height: 120px; }
+  .field input:focus, .field textarea:focus { outline: none; border-color: var(--violet); background: var(--white); box-shadow: 0 0 0 4px rgba(91,75,255,.14); }
+  .field.invalid input, .field.invalid textarea { border-color: var(--err); background: #FFF6F7; }
+  .error { font-size: .88rem; color: var(--err); min-height: 0; display: none; }
+  .field.invalid .error { display: block; }
+  .form-card .btn { width: 100%; margin-top: 6px; }
+  .form-success {
+    display: none; margin-top: 18px; padding: 14px 16px; border-radius: 10px;
+    background: #E8F7F0; color: #10613F; font-weight: 500; align-items: center; gap: 10px;
+  }
+  .form-success.show { display: flex; animation: pop .35s ease-out; }
+  .form-error { display: none; margin-top: 18px; padding: 14px 16px; border-radius: 10px; background: #FFF0F2; color: #9E1F33; font-weight: 500; }
+  .form-error.show { display: block; }
+  @keyframes pop { from { transform: scale(.97); opacity: 0; } to { transform: none; opacity: 1; } }
+
+  .info-list { list-style: none; margin: 0; padding: 0; }
+  .info-list li { display: flex; gap: 16px; padding: 22px 0; border-bottom: 1px solid var(--line); }
+  .info-list li:first-child { padding-top: 0; }
+  .info-icon { width: 44px; height: 44px; flex: none; border-radius: 10px; background: var(--white); border: 1px solid var(--line); display: grid; place-items: center; color: var(--violet); }
+  .info-list h3 { font-size: .95rem; font-weight: 500; color: var(--slate); letter-spacing: 0; }
+  .info-list p, .info-list a { font-weight: 600; font-size: 1.05rem; text-decoration: none; }
+  .info-list a:hover { color: var(--violet); }
+
+  /* Footer */
+  .site-footer { background: var(--white); border-top: 1px solid var(--line); padding: 48px 0 32px; }
+  .footer-top { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 28px; }
+  .hotline-big { display: flex; align-items: center; gap: 14px; text-decoration: none; }
+  .hotline-big .ring { width: 52px; height: 52px; border-radius: 50%; background: var(--butter); display: grid; place-items: center; color: var(--ink); }
+  .hotline-big small { display: block; color: var(--slate); font-size: .9rem; }
+  .hotline-big strong { font-size: 1.6rem; letter-spacing: -0.01em; }
+  .socials { display: flex; gap: 10px; }
+  .socials a { width: 44px; height: 44px; border-radius: 10px; border: 1px solid var(--line); display: grid; place-items: center; color: var(--ink); transition: background-color .2s, color .2s, border-color .2s; }
+  .socials a:hover { background: var(--ink); color: var(--white); border-color: var(--ink); }
+  .footer-bottom { margin-top: 36px; padding-top: 24px; border-top: 1px solid var(--line); display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px; font-size: .92rem; color: var(--slate); }
+
+  /* Floating call button (mobile) */
+  .call-float {
+    position: fixed; right: 18px; bottom: 18px; z-index: 40; display: none;
+    width: 56px; height: 56px; border-radius: 50%; background: var(--violet); color: var(--white);
+    place-items: center; box-shadow: 0 10px 24px -6px rgba(91,75,255,.6);
+  }
+
+  /* Reveal on scroll */
+  .reveal { opacity: 0; transform: translateY(24px); transition: opacity .7s ease-out, transform .7s ease-out; }
+  .reveal.visible { opacity: 1; transform: none; }
+
+  /* ---------- Responsive ---------- */
+  @media (max-width: 980px) {
+    .hero-grid, .about-grid, .contact-grid { grid-template-columns: 1fr; }
+    .hero-grid { gap: 48px; }
+    .about-grid { gap: 48px; }
+    .courses-grid, .reviews-grid { grid-template-columns: 1fr 1fr; }
+    .editor { transform: none; }
+  }
+  @media (max-width: 820px) {
+    .menu-toggle { display: block; }
+    .nav-links {
+      position: absolute; top: var(--header-h); left: 0; right: 0;
+      flex-direction: column; align-items: stretch; gap: 0;
+      background: var(--paper); border-bottom: 1px solid var(--line);
+      padding: 8px 24px 24px;
+      max-height: 0; overflow: hidden; visibility: hidden;
+      transition: max-height .3s ease, visibility .3s;
+    }
+    .nav-links.open { max-height: 420px; visibility: visible; }
+    .nav-links li a { display: block; padding: 14px 0; border-bottom: 1px solid var(--line); font-size: 1.1rem; }
+    .nav-links li:last-child a { border: 0; margin-top: 16px; text-align: center; padding: 14px; }
+  }
+  @media (max-width: 640px) {
+    .wrap { padding: 0 16px; }
+    .hero { padding: 40px 0 64px; }
+    section.block { padding: 72px 0; }
+    .section-head { margin-bottom: 36px; }
+    .courses-grid, .reviews-grid, .form-row { grid-template-columns: 1fr; }
+    .form-row { gap: 0; }
+    .form-card { padding: 24px 20px; }
+    .editor { font-size: .74rem; }
+    .ln { width: 32px; padding-right: 10px; }
+    .editor-body { min-height: 240px; }
+    .hero-actions .btn { flex: 1 1 100%; }
+    .stat { padding: 22px 18px; }
+    .call-float { display: grid; }
+    .footer-top { flex-direction: column; align-items: flex-start; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    .reveal { opacity: 1; transform: none; transition: none; }
+    .caret { animation: none; }
+    *, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; }
+  }
+</style>
+</head>
+<body>
+
+<header class="site-header" id="top">
+  <nav class="wrap nav" aria-label="Điều hướng chính">
+    <a href="#top" class="logo" aria-label="PairLab, về đầu trang">
+      <span class="logo-mark" aria-hidden="true">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M8 7l-5 5 5 5" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/><path d="M16 7l5 5-5 5" stroke="#FFD95A" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </span>
+      PairLab
+    </a>
+    <button class="menu-toggle" aria-label="Mở menu" aria-expanded="false" aria-controls="nav-links"><span></span></button>
+    <ul class="nav-links" id="nav-links">
+      <li><a href="#gioi-thieu">Giới thiệu</a></li>
+      <li><a href="#san-pham">Sản phẩm</a></li>
+      <li><a href="#phan-hoi">Phản hồi</a></li>
+      <li><a href="#lien-he">Liên hệ</a></li>
+      <li><a href="#lien-he" class="btn btn-primary nav-cta">Đăng ký tư vấn</a></li>
+    </ul>
+  </nav>
+</header>
+
+<main>
+  <!-- Hero -->
+  <section class="hero">
+    <div class="wrap hero-grid">
+      <div>
+        <h1>Viết code nhanh gấp 3 lần, mà vẫn hiểu từng dòng.</h1>
+        <p class="hero-lead">Khóa học lập trình cùng AI cho người mới và dev đang đi làm. Bạn học cách giao việc cho Cursor, Claude Code, Copilot, rồi tự tay review, sửa và ra mắt sản phẩm thật sau 8 tuần.</p>
+        <div class="hero-actions">
+          <a href="#lien-he" class="btn btn-primary">Nhận lộ trình miễn phí</a>
+          <a href="#san-pham" class="btn btn-ghost">Xem các khóa học</a>
+        </div>
+        <p class="hero-note"><span class="dot" aria-hidden="true"></span>Khai giảng lớp K24 ngày 12/10, còn 14 chỗ</p>
+      </div>
+
+      <div class="editor" role="img" aria-label="Minh họa: viết một dòng mô tả, AI gợi ý hàm hoàn chỉnh, nhấn Tab để nhận">
+        <div class="editor-bar" aria-hidden="true">
+          <i></i><i></i><i></i>
+          <span class="editor-tab">dang-ky.js</span>
+        </div>
+        <div class="editor-body" aria-hidden="true">
+          <div class="code-line"><span class="ln">1</span><span class="code"><span class="cm" id="prompt-line"></span><span class="caret" id="caret"></span></span></div>
+          <div class="suggestion ghost hidden" id="suggestion">
+            <div class="code-line"><span class="ln">2</span><span class="code"><span class="kw">async function</span> <span class="fn">dangKyKhoaHoc</span>(req, res) {</span></div>
+            <div class="code-line"><span class="ln">3</span><span class="code">  <span class="kw">const</span> { email, khoaHoc } = req.body;</span></div>
+            <div class="code-line"><span class="ln">4</span><span class="code">  <span class="kw">if</span> (!<span class="fn">isEmail</span>(email))</span></div>
+            <div class="code-line"><span class="ln">5</span><span class="code">    <span class="kw">return</span> res.<span class="fn">status</span>(400).<span class="fn">json</span>({ loi: <span class="str">"Email không hợp lệ"</span> });</span></div>
+            <div class="code-line"><span class="ln">6</span><span class="code">  <span class="kw">const</span> hv = <span class="kw">await</span> db.hocVien.<span class="fn">upsert</span>({ email });</span></div>
+            <div class="code-line"><span class="ln">7</span><span class="code">  <span class="kw">await</span> db.dangKy.<span class="fn">create</span>({ hv, khoaHoc });</span></div>
+            <div class="code-line"><span class="ln">8</span><span class="code">  res.<span class="fn">json</span>({ ok: <span class="kw">true</span> });</span></div>
+            <div class="code-line"><span class="ln">9</span><span class="code">}</span></div>
+          </div>
+        </div>
+        <div class="editor-status" aria-hidden="true">
+          <span class="status-msg" id="status-msg">Đang chờ bạn mô tả việc cần làm</span>
+          <span class="kbd" id="kbd">Tab</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Giới thiệu -->
+  <section class="block about reveal" id="gioi-thieu">
+    <div class="wrap">
+      <div class="section-head">
+        <h2>AI viết nháp. Bạn là người quyết định.</h2>
+      </div>
+      <div class="about-grid">
+        <div class="about-text">
+          <p>PairLab ra đời năm 2020 từ một nhóm kỹ sư phần mềm muốn dạy lập trình theo cách chính họ đang làm việc mỗi ngày: ngồi cặp với một trợ lý AI.</p>
+          <p>Chúng tôi không dạy bạn chép prompt. Mỗi buổi học xoay quanh một tính năng thật: bạn chia nhỏ yêu cầu, giao cho AI viết nháp, đọc lại từng dòng, viết test và sửa lỗi. Sau khóa học, bạn biết khi nào nên tin AI và khi nào phải tự viết.</p>
+          <p>Mentor là các senior đang làm tại công ty sản phẩm. Lớp tối đa 20 người, mỗi bài nộp đều được review trong 24 giờ.</p>
+        </div>
+        <div class="stats">
+          <div class="stat"><div class="stat-num"><span data-count="6">0</span><span class="suffix">năm</span></div><p class="stat-label">đào tạo lập trình</p></div>
+          <div class="stat"><div class="stat-num"><span data-count="4200" data-format="thousands">0</span><span class="suffix">+</span></div><p class="stat-label">học viên đã tốt nghiệp</p></div>
+          <div class="stat"><div class="stat-num"><span data-count="180">0</span><span class="suffix">+</span></div><p class="stat-label">sản phẩm học viên đã ra mắt</p></div>
+          <div class="stat"><div class="stat-num"><span data-count="92">0</span><span class="suffix">%</span></div><p class="stat-label">có việc hoặc lên lương sau 6 tháng</p></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Sản phẩm -->
+  <section class="block reveal" id="san-pham">
+    <div class="wrap">
+      <div class="section-head">
+        <h2>Chọn khóa học theo điểm xuất phát của bạn</h2>
+        <p>Tất cả khóa đều học online buổi tối, có bản ghi và nhóm hỏi đáp với mentor.</p>
+      </div>
+      <div class="courses-grid">
+        <article class="course">
+          <div class="course-level"><span class="bars" data-level="1" aria-hidden="true"><b></b><b></b><b></b></span>Chưa biết code</div>
+          <h3>AI Coding Căn bản</h3>
+          <p class="course-desc">Hiểu biến, hàm, API qua các bài tập nhỏ. Dùng AI để giải thích code thay vì chỉ để viết hộ.</p>
+          <ul class="tools"><li>JavaScript</li><li>ChatGPT</li><li>Cursor</li></ul>
+          <div class="course-foot-wrap">
+            <div class="course-foot"><span class="course-meta">4 tuần, 8 buổi</span><span class="price">2.490.000đ</span></div>
+            <a href="#lien-he" class="course-link">Đăng ký tư vấn</a>
+          </div>
+        </article>
+
+        <article class="course featured">
+          <span class="badge">Được chọn nhiều nhất</span>
+          <div class="course-level"><span class="bars" data-level="2" aria-hidden="true"><b></b><b></b><b></b></span>Đã biết code cơ bản</div>
+          <h3>Xây Web App với AI</h3>
+          <p class="course-desc">Từ ý tưởng đến sản phẩm chạy thật: thiết kế dữ liệu, viết API, giao diện, test và deploy. Cuối khóa demo trước nhà tuyển dụng.</p>
+          <ul class="tools"><li>Next.js</li><li>Claude Code</li><li>Supabase</li></ul>
+          <div class="course-foot-wrap">
+            <div class="course-foot"><span class="course-meta">8 tuần, 24 buổi</span><span class="price">6.900.000đ</span></div>
+            <a href="#lien-he" class="course-link">Đăng ký tư vấn</a>
+          </div>
+        </article>
+
+        <article class="course">
+          <div class="course-level"><span class="bars" data-level="3" aria-hidden="true"><b></b><b></b><b></b></span>Dev đang đi làm</div>
+          <h3>AI Agent &amp; Tự động hóa</h3>
+          <p class="course-desc">Xây agent gọi công cụ, đọc tài liệu nội bộ và tự động hóa quy trình. Học cách đo chất lượng và kiểm soát chi phí.</p>
+          <ul class="tools"><li>Python</li><li>Claude API</li><li>MCP</li></ul>
+          <div class="course-foot-wrap">
+            <div class="course-foot"><span class="course-meta">6 tuần, 18 buổi</span><span class="price">8.500.000đ</span></div>
+            <a href="#lien-he" class="course-link">Đăng ký tư vấn</a>
+          </div>
+        </article>
+
+        <article class="course">
+          <div class="course-level"><span class="bars" data-level="2" aria-hidden="true"><b></b><b></b><b></b></span>Dev đang đi làm</div>
+          <h3>Review &amp; Test code do AI viết</h3>
+          <p class="course-desc">Nhận ra lỗi bảo mật, lỗi logic và code thừa mà AI hay tạo ra. Viết test để AI không phá vỡ tính năng cũ.</p>
+          <ul class="tools"><li>TypeScript</li><li>Vitest</li><li>Copilot</li></ul>
+          <div class="course-foot-wrap">
+            <div class="course-foot"><span class="course-meta">3 tuần, 6 buổi</span><span class="price">3.200.000đ</span></div>
+            <a href="#lien-he" class="course-link">Đăng ký tư vấn</a>
+          </div>
+        </article>
+
+        <article class="course">
+          <div class="course-level"><span class="bars" data-level="1" aria-hidden="true"><b></b><b></b><b></b></span>Mọi trình độ</div>
+          <h3>Kèm 1-1 theo dự án</h3>
+          <p class="course-desc">Mang dự án của bạn đến, mentor ngồi cặp cùng bạn và AI mỗi tuần. Phù hợp khi bạn cần ra sản phẩm gấp.</p>
+          <ul class="tools"><li>Theo dự án</li><li>Lịch linh hoạt</li></ul>
+          <div class="course-foot-wrap">
+            <div class="course-foot"><span class="course-meta">Gói 10 buổi</span><span class="price">9.800.000đ</span></div>
+            <a href="#lien-he" class="course-link">Đăng ký tư vấn</a>
+          </div>
+        </article>
+
+        <article class="course">
+          <div class="course-level"><span class="bars" data-level="3" aria-hidden="true"><b></b><b></b><b></b></span>Đội kỹ thuật</div>
+          <h3>Đào tạo doanh nghiệp</h3>
+          <p class="course-desc">Chương trình riêng cho team 10–50 người: quy trình dùng AI an toàn với mã nguồn, chuẩn review và đo năng suất.</p>
+          <ul class="tools"><li>Tại văn phòng</li><li>Online</li></ul>
+          <div class="course-foot-wrap">
+            <div class="course-foot"><span class="course-meta">Thiết kế theo yêu cầu</span><span class="price">Liên hệ</span></div>
+            <a href="#lien-he" class="course-link">Nhận đề xuất</a>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- Phản hồi -->
+  <section class="block reviews reveal" id="phan-hoi">
+    <div class="wrap">
+      <div class="section-head">
+        <h2>Học viên nói gì sau khóa học</h2>
+        <p>Trích từ khảo sát cuối khóa, được học viên đồng ý chia sẻ.</p>
+      </div>
+      <div class="reviews-grid">
+        <figure class="review" style="margin:0">
+          <blockquote>“Trước đây mình dùng AI kiểu copy rồi cầu nguyện. Giờ mình biết chia việc, đọc diff và viết test trước. Code ít lỗi hơn hẳn.”</blockquote>
+          <p class="result">Lên Middle Frontend sau 5 tháng</p>
+          <figcaption class="reviewer">
+            <span class="avatar" style="background:#FFD95A" aria-hidden="true">MA</span>
+            <div><strong>Nguyễn Minh Anh</strong><span>Frontend Developer, Hà Nội</span></div>
+          </figcaption>
+        </figure>
+        <figure class="review" style="margin:0">
+          <blockquote>“Mình làm kế toán, không biết code. Sau 8 tuần mình tự làm được công cụ đối soát hóa đơn cho công ty, tiết kiệm mỗi tháng hai ngày công.”</blockquote>
+          <p class="result">Ra mắt công cụ nội bộ đầu tiên</p>
+          <figcaption class="reviewer">
+            <span class="avatar" style="background:#B7A8FF" aria-hidden="true">TH</span>
+            <div><strong>Trần Thu Hà</strong><span>Kế toán trưởng, TP.HCM</span></div>
+          </figcaption>
+        </figure>
+        <figure class="review" style="margin:0">
+          <blockquote>“Team 12 dev của chúng tôi học khóa doanh nghiệp. Thời gian từ ticket đến merge giảm khoảng 40%, và review code gọn hơn nhiều.”</blockquote>
+          <p class="result">Rút ngắn chu kỳ phát triển 40%</p>
+          <figcaption class="reviewer">
+            <span class="avatar" style="background:#7FD4FF" aria-hidden="true">QB</span>
+            <div><strong>Lê Quốc Bảo</strong><span>CTO, công ty Fintech</span></div>
+          </figcaption>
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <!-- Liên hệ -->
+  <section class="block reveal" id="lien-he">
+    <div class="wrap">
+      <div class="section-head">
+        <h2>Nhận lộ trình học phù hợp với bạn</h2>
+        <p>Để lại thông tin, tư vấn viên sẽ gọi lại trong vòng 2 giờ làm việc.</p>
+      </div>
+      <div class="contact-grid">
+        <form class="form-card" id="contact-form" action="https://formspree.io/f/mvkgrzlj" method="POST" novalidate>
+          <input type="hidden" name="_subject" value="PairLab: yêu cầu tư vấn mới">
+          <input type="text" name="_gotcha" tabindex="-1" autocomplete="off" style="display:none" aria-hidden="true">
+          <div class="form-row">
+            <div class="field">
+              <label for="name">Họ và tên</label>
+              <input id="name" name="name" type="text" autocomplete="name" placeholder="Nguyễn Văn An">
+              <span class="error" id="name-error">Nhập họ tên của bạn, ít nhất 2 ký tự.</span>
+            </div>
+            <div class="field">
+              <label for="phone">Số điện thoại</label>
+              <input id="phone" name="phone" type="tel" autocomplete="tel" inputmode="tel" placeholder="0901 234 567">
+              <span class="error" id="phone-error">Nhập số di động 10 chữ số, bắt đầu bằng 0.</span>
+            </div>
+          </div>
+          <div class="field">
+            <label for="email">Email</label>
+            <input id="email" name="email" type="email" autocomplete="email" placeholder="ban@email.com">
+            <span class="error" id="email-error">Nhập email đúng dạng, ví dụ ban@email.com.</span>
+          </div>
+          <div class="field">
+            <label for="message">Nội dung <small>(bạn muốn học gì, trình độ hiện tại)</small></label>
+            <textarea id="message" name="message" placeholder="Mình đã biết HTML/CSS, muốn học làm web app với AI..."></textarea>
+            <span class="error" id="message-error">Viết vài dòng để chúng tôi tư vấn đúng khóa, ít nhất 10 ký tự.</span>
+          </div>
+          <button type="submit" class="btn btn-primary">Gửi thông tin</button>
+          <div class="form-success" id="form-success" role="status" aria-live="polite">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="10" fill="#1F9D6B"/><path d="M7.5 12.5l3 3 6-6.5" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            <span>Đã gửi thành công. Chúng tôi sẽ gọi lại cho bạn sớm.</span>
+          </div>
+          <div class="form-error" id="form-error" role="alert"></div>
+        </form>
+
+        <ul class="info-list">
+          <li>
+            <span class="info-icon" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-6.2-7-11.5A7 7 0 0 1 19 9.5C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg></span>
+            <div><h3>Địa chỉ</h3><p>Tầng 7, 68 Nguyễn Huệ, Phường Bến Nghé, Quận 1, TP.HCM</p></div>
+          </li>
+          <li>
+            <span class="info-icon" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.4 1.8.7 2.7a2 2 0 0 1-.5 2.1L8 9.8a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.7.7a2 2 0 0 1 1.7 2z"/></svg></span>
+            <div><h3>Hotline</h3><a href="tel:0901234567">0901 234 567</a></div>
+          </li>
+          <li>
+            <span class="info-icon" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M22 6l-10 7L2 6"/></svg></span>
+            <div><h3>Email</h3><a href="mailto:hello@pairlab.vn">hello@pairlab.vn</a></div>
+          </li>
+          <li>
+            <span class="info-icon" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg></span>
+            <div><h3>Giờ làm việc</h3><p>Thứ 2 đến Thứ 7: 8:30 đến 21:00</p></div>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="footer-top">
+      <a href="#top" class="logo" aria-label="PairLab, về đầu trang">
+        <span class="logo-mark" aria-hidden="true">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M8 7l-5 5 5 5" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/><path d="M16 7l5 5-5 5" stroke="#FFD95A" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </span>
+        PairLab
+      </a>
+      <a href="tel:0901234567" class="hotline-big">
+        <span class="ring" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M20 15.5c-1.2 0-2.4-.2-3.6-.6a1 1 0 0 0-1 .2l-2.2 2.2a15 15 0 0 1-6.6-6.6l2.2-2.2a1 1 0 0 0 .3-1A11.4 11.4 0 0 1 8.5 4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1 17 17 0 0 0 17 17 1 1 0 0 0 1-1v-3.5a1 1 0 0 0-1-1z"/></svg></span>
+        <span><small>Hotline tư vấn miễn phí</small><strong>0901 234 567</strong></span>
+      </a>
+      <div class="socials">
+        <a href="https://facebook.com/" target="_blank" rel="noopener" aria-label="Facebook của PairLab">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M13.5 22v-8.2h2.8l.4-3.2h-3.2V8.5c0-.9.3-1.6 1.6-1.6h1.7V4.1c-.3 0-1.3-.1-2.5-.1-2.5 0-4.2 1.5-4.2 4.3v2.4H7.3v3.2h2.8V22h3.4z"/></svg>
+        </a>
+        <a href="https://zalo.me/0901234567" target="_blank" rel="noopener" aria-label="Zalo của PairLab">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3C6.5 3 2 6.8 2 11.5c0 2.6 1.4 4.9 3.6 6.5-.2 1.2-.8 2.3-1.6 3 1.8 0 3.4-.6 4.6-1.5 1.1.3 2.2.5 3.4.5 5.5 0 10-3.8 10-8.5S17.5 3 12 3z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><text x="12" y="13.8" text-anchor="middle" font-size="6.2" font-weight="700" font-family="Arial, sans-serif" fill="currentColor">Zalo</text></svg>
+        </a>
+        <a href="https://youtube.com/" target="_blank" rel="noopener" aria-label="YouTube của PairLab">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M21.6 7.2a2.5 2.5 0 0 0-1.8-1.8C18.2 5 12 5 12 5s-6.2 0-7.8.4A2.5 2.5 0 0 0 2.4 7.2 26 26 0 0 0 2 12a26 26 0 0 0 .4 4.8 2.5 2.5 0 0 0 1.8 1.8C5.8 19 12 19 12 19s6.2 0 7.8-.4a2.5 2.5 0 0 0 1.8-1.8A26 26 0 0 0 22 12a26 26 0 0 0-.4-4.8zM10 15V9l5.2 3L10 15z"/></svg>
+        </a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 Công ty TNHH Giáo dục PairLab. Bảo lưu mọi quyền.</span>
+      <span>MST 0317 xxx xxx, cấp tại TP.HCM</span>
+    </div>
+  </div>
+</footer>
+
+<a href="tel:0901234567" class="call-float" aria-label="Gọi hotline 0901 234 567">
+  <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M20 15.5c-1.2 0-2.4-.2-3.6-.6a1 1 0 0 0-1 .2l-2.2 2.2a15 15 0 0 1-6.6-6.6l2.2-2.2a1 1 0 0 0 .3-1A11.4 11.4 0 0 1 8.5 4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1 17 17 0 0 0 17 17 1 1 0 0 0 1-1v-3.5a1 1 0 0 0-1-1z"/></svg>
+</a>
+
+<script>
+(function () {
+  var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  /* Sticky header border */
+  var header = document.querySelector('.site-header');
+  function onScroll() { header.classList.toggle('scrolled', window.scrollY > 8); }
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+
+  /* Mobile menu */
+  var toggle = document.querySelector('.menu-toggle');
+  var links = document.getElementById('nav-links');
+  function setMenu(open) {
+    links.classList.toggle('open', open);
+    toggle.setAttribute('aria-expanded', open);
+    toggle.setAttribute('aria-label', open ? 'Đóng menu' : 'Mở menu');
+  }
+  toggle.addEventListener('click', function () { setMenu(!links.classList.contains('open')); });
+  links.querySelectorAll('a').forEach(function (a) { a.addEventListener('click', function () { setMenu(false); }); });
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape') setMenu(false); });
+
+  /* Counter */
+  function animateCount(el) {
+    var target = +el.dataset.count;
+    var fmt = function (n) { return el.dataset.format === 'thousands' ? n.toLocaleString('vi-VN') : String(n); };
+    if (reduceMotion) { el.textContent = fmt(target); return; }
+    var start = null, dur = 1600;
+    function step(t) {
+      if (!start) start = t;
+      var p = Math.min((t - start) / dur, 1);
+      var eased = 1 - Math.pow(1 - p, 3);
+      el.textContent = fmt(Math.round(target * eased));
+      if (p < 1) requestAnimationFrame(step);
+    }
+    requestAnimationFrame(step);
+  }
+
+  /* Reveal sections + trigger counters */
+  if ('IntersectionObserver' in window) {
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (!entry.isIntersecting) return;
+        entry.target.classList.add('visible');
+        entry.target.querySelectorAll('[data-count]').forEach(animateCount);
+        io.unobserve(entry.target);
+      });
+    }, { threshold: 0.15 });
+    document.querySelectorAll('.reveal').forEach(function (el) { io.observe(el); });
+  } else {
+    document.querySelectorAll('.reveal').forEach(function (el) { el.classList.add('visible'); });
+    document.querySelectorAll('[data-count]').forEach(animateCount);
+  }
+
+  /* Hero editor: type a prompt, show AI ghost suggestion, press Tab to accept */
+  var promptEl = document.getElementById('prompt-line');
+  var suggestion = document.getElementById('suggestion');
+  var statusMsg = document.getElementById('status-msg');
+  var kbd = document.getElementById('kbd');
+  var caret = document.getElementById('caret');
+  var promptText = '// Tạo API đăng ký khóa học, kiểm tra email hợp lệ';
+  var wait = function (ms) { return new Promise(function (r) { setTimeout(r, ms); }); };
+
+  function showFinal() {
+    promptEl.textContent = promptText;
+    suggestion.classList.remove('hidden', 'ghost');
+    statusMsg.textContent = 'Đã nhận gợi ý. Giờ đến lượt bạn review.';
+    statusMsg.classList.add('ok');
+    caret.style.display = 'none';
+  }
+
+  async function runEditor() {
+    while (true) {
+      promptEl.textContent = '';
+      suggestion.className = 'suggestion ghost hidden';
+      statusMsg.textContent = 'Đang chờ bạn mô tả việc cần làm';
+      statusMsg.classList.remove('ok');
+      caret.style.display = '';
+      await wait(700);
+      for (var i = 1; i <= promptText.length; i++) {
+        promptEl.textContent = promptText.slice(0, i);
+        await wait(38 + Math.random() * 40);
+      }
+      statusMsg.textContent = 'AI đang viết nháp...';
+      await wait(900);
+      suggestion.classList.remove('hidden');
+      statusMsg.textContent = 'Gợi ý 8 dòng. Nhấn Tab để nhận.';
+      await wait(1800);
+      kbd.classList.add('pressed');
+      await wait(220);
+      kbd.classList.remove('pressed');
+      suggestion.classList.remove('ghost');
+      suggestion.classList.add('accepted');
+      statusMsg.textContent = 'Đã nhận gợi ý. Giờ đến lượt bạn review.';
+      statusMsg.classList.add('ok');
+      await wait(5200);
+    }
+  }
+  if (reduceMotion) showFinal(); else runEditor();
+
+  /* Contact form validation */
+  var form = document.getElementById('contact-form');
+  var success = document.getElementById('form-success');
+  var formError = document.getElementById('form-error');
+  var rules = {
+    name: function (v) { return v.trim().length >= 2; },
+    phone: function (v) { return /^(0|\+84)(3|5|7|8|9)\d{8}$/.test(v.replace(/[\s.-]/g, '')); },
+    email: function (v) { return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v.trim()); },
+    message: function (v) { return v.trim().length >= 10; }
+  };
+  function validate(name) {
+    var input = form.elements[name];
+    var ok = rules[name](input.value);
+    var field = input.closest('.field');
+    field.classList.toggle('invalid', !ok);
+    input.setAttribute('aria-invalid', !ok);
+    if (!ok) input.setAttribute('aria-describedby', name + '-error'); else input.removeAttribute('aria-describedby');
+    return ok;
+  }
+  Object.keys(rules).forEach(function (name) {
+    var input = form.elements[name];
+    input.addEventListener('blur', function () { if (input.value) validate(name); });
+    input.addEventListener('input', function () { if (input.closest('.field').classList.contains('invalid')) validate(name); });
+  });
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+    success.classList.remove('show');
+    formError.classList.remove('show');
+    var firstInvalid = null;
+    Object.keys(rules).forEach(function (name) {
+      if (!validate(name) && !firstInvalid) firstInvalid = form.elements[name];
+    });
+    if (firstInvalid) { firstInvalid.focus(); return; }
+    var btn = form.querySelector('button[type="submit"]');
+    btn.disabled = true;
+    btn.textContent = 'Đang gửi...';
+    fetch(form.action, {
+      method: 'POST',
+      body: new FormData(form),
+      headers: { 'Accept': 'application/json' }
+    })
+      .then(function (res) {
+        if (!res.ok) throw new Error('HTTP ' + res.status);
+        form.reset();
+        success.classList.add('show');
+      })
+      .catch(function () {
+        formError.textContent = 'Chưa gửi được thông tin. Kiểm tra kết nối mạng rồi thử lại, hoặc gọi hotline 0901 234 567.';
+        formError.classList.add('show');
+      })
+      .finally(function () {
+        btn.disabled = false;
+        btn.textContent = 'Gửi thông tin';
+      });
+  });
+})();
+</script>
+</body>
+</html>
